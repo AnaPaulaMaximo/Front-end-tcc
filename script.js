@@ -38,7 +38,6 @@ function stripMarkdown(text) {
     return cleanedText.trim();
 }
 
-
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const openBtn = document.getElementById('openSidebarBtn');
@@ -106,10 +105,7 @@ function showTela(page) {
         telaNova.style.display = 'block';
         telaNova.classList.add('fade-in', 'ativa');
     }
-    // Ao mostrar a tela de configurações, atualiza os dados
-    if (page === 'configuracoes') {
-        updateConfigDisplay();
-    }
+
     // Ao mostrar a tela de perfil, atualiza os dados (já existente)
     if (page === 'perfil') {
         updateProfileDisplay();
@@ -158,7 +154,6 @@ function handleLogout() {
     activateMenuLink(document.querySelector('#menuBar .menu-link[data-page="inicio"]'));
     // Limpar dados do usuário
     currentUser = { id: null, nome: '', email: '', senha: '', fotoUrl: '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)' };
-    updateConfigDisplay(); // Reseta o card de configurações
     updateProfileDisplay(); // Reseta a tela de perfil
 }
 
@@ -191,21 +186,13 @@ window.fecharEditarPerfil = function () {
     document.getElementById('modalEditarPerfil').classList.add('hidden');
 }
 
-// Função para atualizar as informações no card de Configurações
-function updateConfigDisplay() {
-    document.getElementById('displayNome').textContent = currentUser.nome || 'Não disponível';
-    document.getElementById('displayEmail').textContent = currentUser.email || 'Não disponível';
-    document.getElementById('displaySenha').textContent = '********'; // A senha sempre aparece como asteriscos
-    // Atualiza a imagem no card de configurações
-    document.getElementById('displayFotoPerfil').src = currentUser.fotoUrl || '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)';
-}
-
 // Função para atualizar as informações na tela de Perfil (já existia e será mantida)
 function updateProfileDisplay() {
     document.getElementById('profileNome').textContent = currentUser.nome || 'Seu Nome';
     document.getElementById('profileEmail').textContent = currentUser.email || 'seuemail@email.com';
     document.getElementById('profileFoto').src = currentUser.fotoUrl || '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)';
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Inicialização da Sidebar e Topbar
@@ -283,7 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentUser.email = data.email;
                 currentUser.senha = senha; // Temporário, em produção não armazene a senha no frontend.
                 currentUser.fotoUrl = data.foto_url || '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)';
-                updateConfigDisplay(); // Atualiza display de configurações
                 updateProfileDisplay(); // Atualiza display de perfil
                 showTela('inicio'); // Ou redireciona para um dashboard
                 activateSidebarLink(document.querySelector('#sidebar a[data-sidebar="inicio"]'));
@@ -330,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica para o botão "Editar Perfil" no card de Configurações
+    // Lógica para o botão "Editar Perfil" no card de perfil
     document.getElementById('btnEditarPerfil').addEventListener('click', () => {
         abrirEditarPerfil();
     });
@@ -380,7 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (novaSenha) {
                     currentUser.senha = novaSenha; // Atualiza a senha localmente
                 }
-                updateConfigDisplay(); // Atualiza o card na tela de configurações
                 updateProfileDisplay(); // Atualiza a tela de perfil (se houver, já deve pegar do currentUser)
                 fecharEditarPerfil();
             } else {
@@ -404,15 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     // --- Integração com o Backend para Ferramentas de Revisão ---
 
-   
     // Gerar Resumo
     document.getElementById('gerarResumoBtn').addEventListener('click', async () => {
         const tema = document.getElementById('resumoInput').value;
         if (!tema) {
-            alert('Por favor, digite um tema para o resumo.');
+            alert('Por favor, digite um tema.');
             return;
         }
         try {
@@ -423,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const data = await response.json();
             if (response.ok) {
-                document.getElementById('resumoTitulo').textContent = `Resumo de: ${stripMarkdown(data.assunto)}`;
+                document.getElementById('resumoTitulo').textContent = `Resumo sobre: ${stripMarkdown(data.assunto)}`;
                 document.getElementById('resumoConteudo').innerHTML = stripMarkdown(data.contedo).replace(/\n/g, '<br>');
                 document.getElementById('resumoOutput').classList.remove('hidden');
             } else {
@@ -466,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('gerarFlashcardsBtn').addEventListener('click', async () => {
         const tema = document.getElementById('flashcardInput').value;
         if (!tema) {
-            alert('Por favor, digite um tema para os flashcards.');
+            alert('Por favor, digite um tema');
             return;
         }
         try {
@@ -479,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 const flashcardsContainer = document.getElementById('flashcardsContainer');
                 flashcardsContainer.innerHTML = ''; // Limpa flashcards anteriores
-                
+
                 // A resposta do backend para flashcard é um texto único com a estrutura
                 // Pergunta: [pergunta] Resposta: [resposta] Explicação: [explicação]
                 const flashcardTexts = data.contedo.split('Pergunta:').filter(text => text.trim() !== '');
@@ -523,64 +506,112 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Gerar Quiz
-    document.getElementById('gerarQuizBtn').addEventListener('click', async () => {
-        const tema = document.getElementById('quizInput').value;
-        if (!tema) {
-            alert('Por favor, digite um tema para o quiz.');
-            return;
+ // QUIZ
+document.getElementById('gerarQuizBtn').addEventListener('click', async () => {
+    const tema = document.getElementById('quizInput').value.trim();
+    const output = document.getElementById('quizOutput');
+    output.innerHTML = '';
+    output.classList.add('hidden');
+
+    if (!tema) {
+        alert('Por favor, digite um tema para gerar o quiz.');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:5000/quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tema })
+        });
+
+        const data = await response.json();
+
+        if (data.erro || !data.contedo) {
+            throw new Error(data.erro || 'Erro ao gerar quiz.');
         }
+
+        let quizJson = [];
         try {
-            const response = await fetch(`${API_BASE_URL}/quiz`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tema })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                const quizOutput = document.getElementById('quizOutput');
-                quizOutput.innerHTML = ''; // Limpa quiz anterior
-                quizOutput.classList.remove('hidden');
+            let textoLimpo = data.contedo.trim();
+            textoLimpo = textoLimpo.replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+            textoLimpo = textoLimpo.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
 
-                const quizContent = stripMarkdown(data.contedo); // Remove Markdown do conteúdo total
-                
-                // Dividir em questões com base em "Questão X:" ou "Pergunta:"
-                const questions = quizContent.split(/Questão:\s*|\n\s*Pergunta:\s*/).filter(q => q.trim() !== '');
+            quizJson = JSON.parse(textoLimpo);
+        } catch (e) {
+            throw new Error("Erro ao interpretar o JSON gerado pela IA.");
+        }
 
-                questions.forEach((qText, index) => {
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'mb-4 p-4 bg-white rounded-lg shadow';
+        quizJson.forEach((questao, index) => {
+            const card = document.createElement('div');
+            card.className = 'mb-6 p-4 bg-white rounded-lg shadow w-full';
 
-                    const lines = qText.split('\n').filter(line => line.trim() !== '');
-                    if (lines.length > 0) {
-                        const question = lines[0].trim(); // A primeira linha é a pergunta
-                        questionDiv.innerHTML += `<p class="font-bold text-purple-800 mb-2">Questão ${index + 1}: ${question}</p>`;
+            const numero = document.createElement('p');
+            numero.className = 'quiz-question-number';
+            numero.textContent = `Pergunta ${index + 1}`;
+            card.appendChild(numero);
 
-                        // As alternativas e a resposta correta estarão nas linhas seguintes
-                        let alternativesHtml = '';
-                        let correctAnswer = '';
-                        for (let i = 1; i < lines.length; i++) {
-                            const line = lines[i].trim();
-                            if (line.startsWith('Resposta Correta:')) {
-                                correctAnswer = line.replace('Resposta Correta:', '').trim();
-                            } else if (line) { // Se for uma linha não vazia e não for a resposta correta
-                                alternativesHtml += `<p class="ml-4 text-gray-700">${line}</p>`;
-                            }
+            const pergunta = document.createElement('p');
+            pergunta.className = 'font-semibold text-lg mb-3';
+            pergunta.textContent = questao.pergunta;
+            card.appendChild(pergunta);
+
+            const opcoesContainer = document.createElement('div');
+            opcoesContainer.className = 'space-y-2';
+
+            const letras = ['a', 'b', 'c', 'd'];
+
+            letras.forEach((letra, i) => {
+                const opcao = document.createElement('button');
+                opcao.className = 'quiz-option w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition';
+                opcao.textContent = `(${letra}) ${questao.opcoes[i]}`;
+                opcao.dataset.letra = letra;
+                opcao.dataset.correta = questao.resposta_correta;
+                opcao.dataset.respondida = "false";
+
+                opcao.addEventListener('click', () => {
+                    if (opcao.closest('.card-respondida')) return;
+
+                    const botoes = opcao.parentElement.querySelectorAll('button');
+                    botoes.forEach(btn => {
+                        if (btn.dataset.letra === btn.dataset.correta) {
+                            btn.classList.add('correct-answer');
+                        } else {
+                            btn.classList.add('wrong-answer');
                         }
-                        questionDiv.innerHTML += alternativesHtml;
-                        if (correctAnswer) {
-                            questionDiv.innerHTML += `<p class="mt-2 text-pink-600 font-semibold">Resposta Correta: ${correctAnswer}</p>`;
-                        }
-                    }
-                    quizOutput.appendChild(questionDiv);
+                        btn.disabled = true;
+                    });
+
+                    opcao.closest('.card').classList.add('card-respondida');
                 });
 
-            } else {
-                alert(data.error || 'Erro ao gerar quiz.');
-            }
-        } catch (error) {
-                console.error('Erro ao conectar com a API de quiz:', error);
-                alert('Erro ao conectar com o servidor para gerar quiz.');
-            }
+                opcoesContainer.appendChild(opcao);
+            });
+
+            card.appendChild(opcoesContainer);
+            card.classList.add('card');
+            output.appendChild(card);
         });
-    });
+
+        // ⬇️ ADICIONAR BOTÃO DE RECOMEÇAR
+        const restartBtn = document.createElement('button');
+        restartBtn.textContent = 'Recomeçar';
+        restartBtn.className = 'btn-primary mt-6';
+        restartBtn.addEventListener('click', () => {
+            document.getElementById('quizInput').value = '';
+            output.classList.add('hidden');
+            output.innerHTML = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        output.appendChild(restartBtn);
+
+        output.classList.remove('hidden');
+        output.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (error) {
+        alert('Erro ao gerar quiz: ' + error.message);
+        console.error(error);
+    }
+});
+
+});

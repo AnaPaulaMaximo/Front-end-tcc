@@ -57,35 +57,28 @@
                         Início
                     </a>
                 </li>
-                <li>
-                    <a href="#" data-sidebar="configuracoes"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg text-white hover:bg-[#6d28d9] transition">
-                        <span class="material-icons">settings</span>
-                        Configurações
-                    </a>
-                </li>
-                <li>
+                <!-- <li>
                     <a href="#" data-sidebar="historico"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg text-white hover:bg-[#6d28d9] transition">
                         <span class="material-icons">history</span>
                         Histórico
                     </a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <a href="#" data-sidebar="perfil"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg text-white hover:bg-[#6d28d9] transition">
                         <span class="material-icons">person</span>
                         Perfil
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="px-6 py-6">
-            <button id="authBtn"
+            <!-- <button id="authBtn"
                 class="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition shadow">
                 <span class="material-icons" id="authIcon">logout</span>
                 <span id="authText">Sair</span>
-            </button>
+            </button> -->
             <button id="hideSidebarBtn" onclick="toggleSidebar()"
                 class="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#4c1d95] text-white hover:bg-[#6d28d9] transition shadow mt-2">
                 <span class="material-icons">chevron_left</span>
@@ -120,7 +113,7 @@
                     Nosso foco é te preparar para os principais vestibulares do Brasil, como Fuvest, Unicamp e Enem.<br>
                     Mas se o seu objetivo é outro, não se preocupe, o RePensei também te ajuda nessa jornada!
                 </p>
-                <div class="w-full flex justify-center gap-6 mt-8">
+                <!-- <div class="w-full flex justify-center gap-6 mt-8">
                     <button onclick="abrirLogin()"
                         class="btn-animado bg-gradient-to-r from-pink-400 to-purple-400 text-white text-xl md:text-2xl font-bold px-8 md:px-10 py-3 rounded-2xl shadow-md transition relative">
                         <span class="material-icons align-middle mr-1">login</span> Login
@@ -129,7 +122,7 @@
                         class="btn-animado bg-gradient-to-r from-purple-400 to-pink-400 text-white text-xl md:text-2xl font-bold px-8 md:px-10 py-3 rounded-2xl shadow-md transition relative">
                         <span class="material-icons align-middle mr-1">person_add</span> Criar conta
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -211,41 +204,13 @@
             </div>
         </div>
 
-        <div id="tela-historico" class="tela">
+        <!-- <div id="tela-historico" class="tela">
             <div class="w-full max-w-2xl mx-auto p-10 rounded-3xl flex flex-col items-center glass shadow-2xl border-2 border-purple-200">
                 <h2 class="text-3xl font-bold text-white mb-4">Histórico</h2>
                 <p class="text-white text-lg text-center">Aqui você verá seu histórico de atividades.</p>
             </div>
-        </div>
+        </div> -->
 
-        <div id="tela-configuracoes" class="tela">
-            <div class="w-full max-w-md mx-auto p-8 rounded-2xl flex flex-col items-center glass shadow-2xl border-2 border-purple-200">
-                <h2 class="text-3xl font-bold text-white mb-6">Configurações do Perfil</h2>
-                <div class="bg-white bg-opacity-80 rounded-xl p-6 w-full flex flex-col items-start shadow">
-                    <div class="flex items-center justify-center w-full mb-4">
-                        <img id="displayFotoPerfil" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Foto de perfil"
-                            class="w-24 h-24 rounded-full border-4 border-purple-300 shadow">
-                    </div>
-                    <h3 class="text-xl font-semibold text-purple-800 mb-4">Suas Informações</h3>
-                    <div class="w-full mb-3">
-                        <label class="text-gray-700 font-medium block mb-1">Nome:</label>
-                        <p id="displayNome" class="text-gray-900 text-lg font-bold">Usuário Teste</p>
-                    </div>
-                    <div class="w-full mb-3">
-                        <label class="text-gray-700 font-medium block mb-1">E-mail:</label>
-                        <p id="displayEmail" class="text-gray-900 text-lg">usuario.teste@example.com</p>
-                    </div>
-                    <div class="w-full mb-6">
-                        <label class="text-gray-700 font-medium block mb-1">Senha:</label>
-                        <p id="displaySenha" class="text-gray-900 text-lg">********</p>
-                    </div>
-                    <button id="btnEditarPerfil"
-                        class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg shadow hover:from-purple-600 hover:to-pink-600 transition">
-                        Editar Perfil
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <div id="tela-perfil" class="tela">
             <div class="w-full max-w-4xl mx-auto p-12 rounded-3xl flex flex-col items-center glass shadow-2xl border-2 border-purple-200">
@@ -256,17 +221,14 @@
                     <span class="text-purple-500 text-lg mb-2" id="profileEmail">seuemail@email.com</span>
                 </div>
                 <div class="w-full flex flex-col gap-4">
-                    <div class="bg-white bg-opacity-80 rounded-xl p-6 flex flex-col items-start w-full">
-                        <h3 class="text-xl font-semibold text-purple-800 mb-2">Progresso</h3>
-                        <div class="w-full bg-purple-100 rounded-full h-4 mb-2">
-                            <div class="bg-gradient-to-r from-purple-500 to-pink-400 h-4 rounded-full" style="width: 60%;"></div>
-                        </div>
-                        <span class="text-purple-700 text-sm">60% dos conteúdos concluídos</span>
-                    </div>
+                   <button id="btnEditarPerfil"
+                        class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg shadow hover:from-purple-600 hover:to-pink-600 transition">
+                        Editar Perfil
+                    </button>
                 </div>
             </div>
         </div>
-
+<!-- 
         <div id="modalLogin" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
             <div
                 class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center modal-anim border-2 border-purple-200 relative">
@@ -284,7 +246,7 @@
                     Entrar
                 </button>
                 <button onclick="fecharLogin()" class="text-purple-700 hover:underline mt-2 text-base">Cancelar</button>
-            </div>
+            </div> -->
         </div>
         <div id="modalCriarConta"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">

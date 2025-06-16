@@ -190,3 +190,57 @@
         .card-tema:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
         .tema-icon { transition: transform 0.3s ease; }
         .card-tema:hover .tema-icon { transform: scale(1.1); }
+
+/* QUIZ*/
+
+.quiz-option.correct-answer {
+    background-color: #d1fae5; /* green-100 */
+    border-color: #34d399; /* green-400 */
+    color: #065f46; /* green-800 */
+    font-weight: bold;
+}
+
+.quiz-option.wrong-answer {
+    background-color: #fee2e2; /* red-100 */
+    border-color: #ef4444; /* red-500 */
+    color: #991b1b; /* red-800 */
+    font-weight: bold;
+}
+
+/* Opcional: Estilo para botões de navegação */
+.btn-primary {
+    background: linear-gradient(to right, #8b5cf6, #ec4899); /* purple-500 to pink-500 */
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #e5e7eb; /* gray-200 */
+    color: #374151; /* gray-700 */
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.btn-secondary:hover {
+    background-color: #d1d5db; /* gray-300 */
+}
+
+/* Estilo para número da questão */
+.quiz-question-number {
+    font-size: 0.875rem; /* 14px */
+    color: #6b7280; /* gray-500 */
+    margin-bottom: 0.5rem;
+    text-align: right;
+}
