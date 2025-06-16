@@ -122,40 +122,40 @@ function activateSidebarLink(target) {
     }
 }
 
-// Função para atualizar o botão de Login/Sair
-function updateAuthButton() {
-    const authBtn = document.getElementById('authBtn');
-    const authIcon = document.getElementById('authIcon');
-    const authText = document.getElementById('authText');
+// // Função para atualizar o botão de Login/Sair
+// function updateAuthButton() {
+//     const authBtn = document.getElementById('authBtn');
+//     const authIcon = document.getElementById('authIcon');
+//     const authText = document.getElementById('authText');
 
-    if (isLoggedIn) {
-        authBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
-        authBtn.classList.add('bg-red-600', 'hover:bg-red-700');
-        authIcon.textContent = 'logout';
-        authText.textContent = 'Sair';
-        authBtn.onclick = handleLogout;
-    } else {
-        authBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
-        authBtn.classList.add('bg-purple-600', 'hover:bg-purple-700'); // Ou qualquer outra cor para "Login"
-        authIcon.textContent = 'login';
-        authText.textContent = 'Login';
-        authBtn.onclick = abrirLogin;
-    }
-}
+//     if (isLoggedIn) {
+//         authBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+//         authBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+//         authIcon.textContent = 'logout';
+//         authText.textContent = 'Sair';
+//         authBtn.onclick = handleLogout;
+//     } else {
+//         authBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+//         authBtn.classList.add('bg-purple-600', 'hover:bg-purple-700'); // Ou qualquer outra cor para "Login"
+//         authIcon.textContent = 'login';
+//         authText.textContent = 'Login';
+//         authBtn.onclick = abrirLogin;
+//     }
+// }
 
-// Função de Logout
-function handleLogout() {
-    isLoggedIn = false;
-    alert('Você foi desconectado!');
-    updateAuthButton();
-    // Volta para a tela de início
-    showTela('inicio');
-    activateSidebarLink(document.querySelector('#sidebar a[data-sidebar="inicio"]'));
-    activateMenuLink(document.querySelector('#menuBar .menu-link[data-page="inicio"]'));
-    // Limpar dados do usuário
-    currentUser = { id: null, nome: '', email: '', senha: '', fotoUrl: '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)' };
-    updateProfileDisplay(); // Reseta a tela de perfil
-}
+// // Função de Logout
+// function handleLogout() {
+//     isLoggedIn = false;
+//     alert('Você foi desconectado!');
+//     updateAuthButton();
+//     // Volta para a tela de início
+//     showTela('inicio');
+//     activateSidebarLink(document.querySelector('#sidebar a[data-sidebar="inicio"]'));
+//     activateMenuLink(document.querySelector('#menuBar .menu-link[data-page="inicio"]'));
+//     // Limpar dados do usuário
+//     currentUser = { id: null, nome: '', email: '', senha: '', fotoUrl: '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)' };
+//     updateProfileDisplay(); // Reseta a tela de perfil
+// }
 
 // Funções para Modais de Login e Criar Conta
 window.abrirLogin = function () {
@@ -211,8 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showTela('inicio');
     }
 
-    // Atualiza o botão de autenticação ao carregar a página
-    updateAuthButton();
+    // // Atualiza o botão de autenticação ao carregar a página
+    // updateAuthButton();
 
     // Event listeners para os links da Topbar
     document.querySelectorAll('#menuBar .menu-link').forEach(link => {
@@ -245,149 +245,149 @@ document.addEventListener('DOMContentLoaded', () => {
         if (active) moveMenuUnderline(active);
     });
 
-    // Lógica para os botões de Login e Criar Conta (Modal)
-    document.getElementById('entrarBtn').addEventListener('click', async () => {
-        const email = document.getElementById('loginEmail').value;
-        const senha = document.getElementById('loginSenha').value;
+    // // Lógica para os botões de Login e Criar Conta (Modal)
+    // document.getElementById('entrarBtn').addEventListener('click', async () => {
+    //     const email = document.getElementById('loginEmail').value;
+    //     const senha = document.getElementById('loginSenha').value;
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, senha }),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                alert(data.message);
-                fecharLogin();
-                isLoggedIn = true;
-                updateAuthButton();
-                // Carrega os dados do usuário após o login
-                currentUser.id = data.id;
-                currentUser.nome = data.nome;
-                currentUser.email = data.email;
-                currentUser.senha = senha; // Temporário, em produção não armazene a senha no frontend.
-                currentUser.fotoUrl = data.foto_url || '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)';
-                updateProfileDisplay(); // Atualiza display de perfil
-                showTela('inicio'); // Ou redireciona para um dashboard
-                activateSidebarLink(document.querySelector('#sidebar a[data-sidebar="inicio"]'));
-                activateMenuLink(document.querySelector('#menuBar .menu-link[data-page="inicio"]'));
-            } else {
-                alert(data.error || 'Erro ao fazer login. Verifique suas credenciais.');
-            }
-        } catch (error) {
-            console.error('Erro ao conectar com a API de login:', error);
-            alert('Erro ao conectar com o servidor. Tente novamente mais tarde.');
-        }
-    });
+    //     try {
+    //         const response = await fetch(`${API_BASE_URL}/login`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ email, senha }),
+    //         });
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert(data.message);
+    //             fecharLogin();
+    //             isLoggedIn = true;
+    //             updateAuthButton();
+    //             // Carrega os dados do usuário após o login
+    //             currentUser.id = data.id;
+    //             currentUser.nome = data.nome;
+    //             currentUser.email = data.email;
+    //             currentUser.senha = senha; // Temporário, em produção não armazene a senha no frontend.
+    //             currentUser.fotoUrl = data.foto_url || '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)';
+    //             updateProfileDisplay(); // Atualiza display de perfil
+    //             showTela('inicio'); // Ou redireciona para um dashboard
+    //             activateSidebarLink(document.querySelector('#sidebar a[data-sidebar="inicio"]'));
+    //             activateMenuLink(document.querySelector('#menuBar .menu-link[data-page="inicio"]'));
+    //         } else {
+    //             alert(data.error || 'Erro ao fazer login. Verifique suas credenciais.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Erro ao conectar com a API de login:', error);
+    //         alert('Erro ao conectar com o servidor. Tente novamente mais tarde.');
+    //     }
+    // });
 
-    document.getElementById('criarContaBtn').addEventListener('click', async () => {
-        const nome = document.getElementById('cadastroNome').value;
-        const email = document.getElementById('cadastroEmail').value;
-        const senha = document.getElementById('cadastroSenha').value;
-        const confirmarSenha = document.getElementById('cadastroConfirmarSenha').value;
+    // document.getElementById('criarContaBtn').addEventListener('click', async () => {
+    //     const nome = document.getElementById('cadastroNome').value;
+    //     const email = document.getElementById('cadastroEmail').value;
+    //     const senha = document.getElementById('cadastroSenha').value;
+    //     const confirmarSenha = document.getElementById('cadastroConfirmarSenha').value;
 
-        if (senha !== confirmarSenha) {
-            alert('As senhas não coincidem!');
-            return;
-        }
+    //     if (senha !== confirmarSenha) {
+    //         alert('As senhas não coincidem!');
+    //         return;
+    //     }
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/cadastrar_usuario`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ nome, email, senha }),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                alert(data.message);
-                fecharCriarConta();
-                abrirLogin(); // Opcional: Abrir modal de login automaticamente
-            } else {
-                alert(data.error || 'Erro ao criar conta.');
-            }
-        } catch (error) {
-            console.error('Erro ao conectar com a API de cadastro:', error);
-            alert('Erro ao conectar com o servidor. Tente novamente mais tarde.');
-        }
-    });
+    //     try {
+    //         const response = await fetch(`${API_BASE_URL}/cadastrar_usuario`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ nome, email, senha }),
+    //         });
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert(data.message);
+    //             fecharCriarConta();
+    //             abrirLogin(); // Opcional: Abrir modal de login automaticamente
+    //         } else {
+    //             alert(data.error || 'Erro ao criar conta.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Erro ao conectar com a API de cadastro:', error);
+    //         alert('Erro ao conectar com o servidor. Tente novamente mais tarde.');
+    //     }
+    // });
 
-    // Lógica para o botão "Editar Perfil" no card de perfil
-    document.getElementById('btnEditarPerfil').addEventListener('click', () => {
-        abrirEditarPerfil();
-    });
+    // // Lógica para o botão "Editar Perfil" no card de perfil
+    // document.getElementById('btnEditarPerfil').addEventListener('click', () => {
+    //     abrirEditarPerfil();
+    // });
 
-    // Lógica para o botão "Salvar Alterações" no modal de Editar Perfil
-    document.getElementById('salvarEdicaoBtn').addEventListener('click', async () => {
-        const novoNome = document.getElementById('editNome').value;
-        const novoEmail = document.getElementById('editEmail').value;
-        const novaSenha = document.getElementById('editSenha').value; // Pode estar vazia
-        const novaFotoUrl = document.getElementById('editFotoUrl').value; // <-- Obtém a nova URL da foto
+    // // Lógica para o botão "Salvar Alterações" no modal de Editar Perfil
+    // document.getElementById('salvarEdicaoBtn').addEventListener('click', async () => {
+    //     const novoNome = document.getElementById('editNome').value;
+    //     const novoEmail = document.getElementById('editEmail').value;
+    //     const novaSenha = document.getElementById('editSenha').value; // Pode estar vazia
+    //     const novaFotoUrl = document.getElementById('editFotoUrl').value; // <-- Obtém a nova URL da foto
 
-        // Validação básica
-        if (!novoNome || !novoEmail) {
-            alert('Nome e E-mail não podem ser vazios.');
-            return;
-        }
+    //     // Validação básica
+    //     if (!novoNome || !novoEmail) {
+    //         alert('Nome e E-mail não podem ser vazios.');
+    //         return;
+    //     }
 
-        const updateData = {
-            nome: novoNome,
-            email: novoEmail,
-            foto_url: novaFotoUrl // <-- Inclui a URL da foto no payload
-        };
-        if (novaSenha) { // Inclui a senha apenas se não estiver vazia
-            updateData.senha = novaSenha;
-        }
+    //     const updateData = {
+    //         nome: novoNome,
+    //         email: novoEmail,
+    //         foto_url: novaFotoUrl // <-- Inclui a URL da foto no payload
+    //     };
+    //     if (novaSenha) { // Inclui a senha apenas se não estiver vazia
+    //         updateData.senha = novaSenha;
+    //     }
 
-        try {
-            if (!isLoggedIn || !currentUser.id) { // Garante que há um usuário logado
-                alert('Nenhum usuário logado para editar.');
-                return;
-            }
+    //     try {
+    //         if (!isLoggedIn || !currentUser.id) { // Garante que há um usuário logado
+    //             alert('Nenhum usuário logado para editar.');
+    //             return;
+    //         }
 
-            const response = await fetch(`${API_BASE_URL}/editar_usuario/${currentUser.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updateData),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                alert(data.message);
-                // Atualiza os dados locais do usuário
-                currentUser.nome = novoNome;
-                currentUser.email = novoEmail;
-                currentUser.fotoUrl = novaFotoUrl; // <-- Atualiza a foto localmente
-                if (novaSenha) {
-                    currentUser.senha = novaSenha; // Atualiza a senha localmente
-                }
-                updateProfileDisplay(); // Atualiza a tela de perfil (se houver, já deve pegar do currentUser)
-                fecharEditarPerfil();
-            } else {
-                alert(data.error || 'Erro ao salvar alterações.');
-            }
-        } catch (error) {
-            console.error('Erro ao conectar com a API de edição:', error);
-            alert('Erro ao conectar com o servidor para salvar alterações.');
-        }
-    });
+    //         const response = await fetch(`${API_BASE_URL}/editar_usuario/${currentUser.id}`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(updateData),
+    //         });
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert(data.message);
+    //             // Atualiza os dados locais do usuário
+    //             currentUser.nome = novoNome;
+    //             currentUser.email = novoEmail;
+    //             currentUser.fotoUrl = novaFotoUrl; // <-- Atualiza a foto localmente
+    //             if (novaSenha) {
+    //                 currentUser.senha = novaSenha; // Atualiza a senha localmente
+    //             }
+    //             updateProfileDisplay(); // Atualiza a tela de perfil (se houver, já deve pegar do currentUser)
+    //             fecharEditarPerfil();
+    //         } else {
+    //             alert(data.error || 'Erro ao salvar alterações.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Erro ao conectar com a API de edição:', error);
+    //         alert('Erro ao conectar com o servidor para salvar alterações.');
+    //     }
+    // });
 
-    // Event listener para pré-visualizar a foto no modal de edição em tempo real
-    document.getElementById('editFotoUrl').addEventListener('input', (e) => {
-        const imgPreview = document.getElementById('editFotoPreview');
-        const url = e.target.value;
-        // Tenta carregar a imagem para pré-visualização, caso contrário usa a padrão
-        if (url) {
-            imgPreview.src = url;
-        } else {
-            imgPreview.src = '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)'; // Fallback
-        }
-    });
+    // // Event listener para pré-visualizar a foto no modal de edição em tempo real
+    // document.getElementById('editFotoUrl').addEventListener('input', (e) => {
+    //     const imgPreview = document.getElementById('editFotoPreview');
+    //     const url = e.target.value;
+    //     // Tenta carregar a imagem para pré-visualização, caso contrário usa a padrão
+    //     if (url) {
+    //         imgPreview.src = url;
+    //     } else {
+    //         imgPreview.src = '[https://cdn-icons-png.flaticon.com/512/3135/3135715.png](https://cdn-icons-png.flaticon.com/512/3135/3135715.png)'; // Fallback
+    //     }
+    // });
 
     // --- Integração com o Backend para Ferramentas de Revisão ---
 
