@@ -398,6 +398,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Por favor, digite um tema.');
             return;
         }
+        // ⛔️ Desativa o botão durante a geração
+        gerarResumoBtn.disabled = true;
+        gerarResumoBtn.textContent = "Gerando...";
+
         try {
             const response = await fetch(`${API_BASE_URL}/resumo`, {
                 method: 'POST',
@@ -416,6 +420,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao conectar com a API de resumo:', error);
             alert('Erro ao conectar com o servidor para gerar resumo.');
         }
+        finally {
+        // ✅ Reativa o botão após o processo (sucesso ou erro)
+        gerarResumoBtn.disabled = false;
+        gerarResumoBtn.textContent = "Gerar Resumo";
+    }
     });
 
     // Corrigir Texto
@@ -426,6 +435,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Por favor, preencha o tema e o texto para correção.');
             return;
         }
+        // ⛔️ Desativa o botão durante a geração
+        corrigirTextoBtn.disabled = true;
+        corrigirTextoBtn.textContent = "Gerando...";
         try {
             const response = await fetch(`${API_BASE_URL}/correcao`, {
                 method: 'POST',
@@ -443,6 +455,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao conectar com a API de correção:', error);
             alert('Erro ao conectar com o servidor para correção.');
         }
+        finally {
+        // ✅ Reativa o botão após o processo (sucesso ou erro)
+        corrigirTextoBtn.disabled = false;
+        corrigirTextoBtn.textContent = "Gerar Resumo";
+    }
     });
 
     // Gerar Flashcards
@@ -452,6 +469,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Por favor, digite um tema');
             return;
         }
+        // ⛔️ Desativa o botão durante a geração
+        gerarFlashcardsBtn.disabled = true;
+        gerarFlashcardsBtn.textContent = "Gerando...";
         try {
             const response = await fetch(`${API_BASE_URL}/flashcard`, {
                 method: 'POST',
@@ -478,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const flashcardDiv = document.createElement('div');
                         flashcardDiv.className = 'flashcard bg-white rounded-xl shadow-lg cursor-pointer perspective';
                         // Adiciona evento de click para virar
-                        flashcardDiv.addEventListener('click', function() {
+                        flashcardDiv.addEventListener('click', function () {
                             this.classList.toggle('flipped');
                         });
                         flashcardDiv.innerHTML = `
@@ -504,114 +524,149 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao conectar com a API de flashcards:', error);
             alert('Erro ao conectar com o servidor para gerar flashcards.');
         }
+        finally {
+        // ✅ Reativa o botão após o processo (sucesso ou erro)
+        gerarFlashcardsBtn.disabled = false;
+        gerarFlashcardsBtn.textContent = "Gerar Resumo";
+    }
     });
 
- // QUIZ
-document.getElementById('gerarQuizBtn').addEventListener('click', async () => {
-    const tema = document.getElementById('quizInput').value.trim();
-    const output = document.getElementById('quizOutput');
-    output.innerHTML = '';
-    output.classList.add('hidden');
 
-    if (!tema) {
-        alert('Por favor, digite um tema para gerar o quiz.');
-        return;
-    }
+    //QUIZ
+    let totalQuestoes = 0;
+    let respostasCorretas = 0;
+    let respondidas = 0;
 
-    try {
-        const response = await fetch('http://localhost:5000/quiz', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tema })
-        });
+    document.getElementById("gerarQuizBtn").addEventListener("click", async () => {
+        const tema = document.getElementById("quizInput").value.trim();
+        const output = document.getElementById("quizOutput");
+        const popup = document.getElementById("quizPopup");
+        const scoreDisplay = document.getElementById("quizScore");
+        const restartBtn = document.getElementById("restartQuizBtn");
+        const gerarQuizBtn = document.getElementById("gerarQuizBtn");
 
-        const data = await response.json();
-
-        if (data.erro || !data.contedo) {
-            throw new Error(data.erro || 'Erro ao gerar quiz.');
+        if (!tema) {
+            alert("Por favor, digite um tema para gerar o quiz.");
+            return;
         }
 
-        let quizJson = [];
+        // Desativa botão enquanto carrega
+        gerarQuizBtn.disabled = true;
+        gerarQuizBtn.textContent = "Gerando...";
+
+        output.innerHTML = "";
+        output.classList.add("hidden");
+        popup.classList.remove("show");
+        respostasCorretas = 0;
+        respondidas = 0;
+
         try {
-            let textoLimpo = data.contedo.trim();
-            textoLimpo = textoLimpo.replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
-            textoLimpo = textoLimpo.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
-
-            quizJson = JSON.parse(textoLimpo);
-        } catch (e) {
-            throw new Error("Erro ao interpretar o JSON gerado pela IA.");
-        }
-
-        quizJson.forEach((questao, index) => {
-            const card = document.createElement('div');
-            card.className = 'mb-6 p-4 bg-white rounded-lg shadow w-full';
-
-            const numero = document.createElement('p');
-            numero.className = 'quiz-question-number';
-            numero.textContent = `Pergunta ${index + 1}`;
-            card.appendChild(numero);
-
-            const pergunta = document.createElement('p');
-            pergunta.className = 'font-semibold text-lg mb-3';
-            pergunta.textContent = questao.pergunta;
-            card.appendChild(pergunta);
-
-            const opcoesContainer = document.createElement('div');
-            opcoesContainer.className = 'space-y-2';
-
-            const letras = ['a', 'b', 'c', 'd'];
-
-            letras.forEach((letra, i) => {
-                const opcao = document.createElement('button');
-                opcao.className = 'quiz-option w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition';
-                opcao.textContent = `(${letra}) ${questao.opcoes[i]}`;
-                opcao.dataset.letra = letra;
-                opcao.dataset.correta = questao.resposta_correta;
-                opcao.dataset.respondida = "false";
-
-                opcao.addEventListener('click', () => {
-                    if (opcao.closest('.card-respondida')) return;
-
-                    const botoes = opcao.parentElement.querySelectorAll('button');
-                    botoes.forEach(btn => {
-                        if (btn.dataset.letra === btn.dataset.correta) {
-                            btn.classList.add('correct-answer');
-                        } else {
-                            btn.classList.add('wrong-answer');
-                        }
-                        btn.disabled = true;
-                    });
-
-                    opcao.closest('.card').classList.add('card-respondida');
-                });
-
-                opcoesContainer.appendChild(opcao);
+            const response = await fetch("http://localhost:5000/quiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ tema }),
             });
 
-            card.appendChild(opcoesContainer);
-            card.classList.add('card');
-            output.appendChild(card);
-        });
+            const data = await response.json();
 
-        // ⬇️ ADICIONAR BOTÃO DE RECOMEÇAR
-        const restartBtn = document.createElement('button');
-        restartBtn.textContent = 'Recomeçar';
-        restartBtn.className = 'btn-primary mt-6';
-        restartBtn.addEventListener('click', () => {
-            document.getElementById('quizInput').value = '';
-            output.classList.add('hidden');
-            output.innerHTML = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        output.appendChild(restartBtn);
+            if (data.erro || !data.contedo) {
+                throw new Error(data.erro || "Erro ao gerar quiz.");
+            }
 
-        output.classList.remove('hidden');
-        output.scrollIntoView({ behavior: 'smooth' });
+            let quizJson = [];
+            try {
+                let textoLimpo = data.contedo.trim();
+                textoLimpo = textoLimpo
+                    .replace(/^```(?:json)?/i, "")
+                    .replace(/```$/, "")
+                    .trim();
+                textoLimpo = textoLimpo.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+                quizJson = JSON.parse(textoLimpo);
+            } catch (e) {
+                throw new Error("Erro ao interpretar o JSON gerado pela IA.");
+            }
 
-    } catch (error) {
-        alert('Erro ao gerar quiz: ' + error.message);
-        console.error(error);
-    }
-});
+            totalQuestoes = quizJson.length;
+
+            quizJson.forEach((questao, index) => {
+                const card = document.createElement("div");
+                card.className = "mb-6 p-4 bg-white rounded-lg shadow w-full card";
+
+                const numero = document.createElement("p");
+                numero.className = "quiz-question-number";
+                numero.textContent = `Pergunta ${index + 1}`;
+                card.appendChild(numero);
+
+                const pergunta = document.createElement("p");
+                pergunta.className = "font-semibold text-lg mb-3";
+                pergunta.textContent = questao.pergunta;
+                card.appendChild(pergunta);
+
+                const opcoesContainer = document.createElement("div");
+                opcoesContainer.className = "space-y-2";
+
+                const letras = ["a", "b", "c", "d"];
+                letras.forEach((letra, i) => {
+                    const opcao = document.createElement("button");
+                    opcao.className =
+                        "quiz-option w-full text-left p-3 border rounded-lg hover:bg-gray-100 transition";
+                    opcao.textContent = `(${letra}) ${questao.opcoes[i]}`;
+                    opcao.dataset.letra = letra;
+                    opcao.dataset.correta = questao.resposta_correta;
+
+                    opcao.addEventListener("click", () => {
+                        if (card.classList.contains("card-respondida")) return;
+
+                        const botoes = opcoesContainer.querySelectorAll("button");
+                        botoes.forEach((btn) => {
+                            if (btn.dataset.letra === btn.dataset.correta) {
+                                btn.classList.add("correct-answer");
+                            } else {
+                                btn.classList.add("wrong-answer");
+                            }
+                            btn.disabled = true;
+                        });
+
+                        card.classList.add("card-respondida");
+                        respondidas++;
+
+                        if (opcao.dataset.letra === opcao.dataset.correta) {
+                            respostasCorretas++;
+                        }
+
+                        if (respondidas === totalQuestoes) {
+                            scoreDisplay.textContent = `Você acertou ${respostasCorretas} de ${totalQuestoes} perguntas!`;
+                            popup.classList.add("show");
+                        }
+                    });
+
+                    opcoesContainer.appendChild(opcao);
+                });
+
+                card.appendChild(opcoesContainer);
+                output.appendChild(card);
+            });
+
+            output.classList.remove("hidden");
+            output.scrollIntoView({ behavior: "smooth" });
+
+            // Recomeçar
+            restartBtn.addEventListener("click", () => {
+                document.getElementById("quizInput").value = "";
+                output.innerHTML = "";
+                output.classList.add("hidden");
+                popup.classList.remove("show");
+                gerarQuizBtn.disabled = false;
+                gerarQuizBtn.textContent = "Gerar Quiz";
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        } catch (error) {
+            alert("Erro ao gerar quiz: " + error.message);
+            console.error(error);
+            gerarQuizBtn.disabled = false;
+            gerarQuizBtn.textContent = "Gerar Quiz";
+        }
+    });
+
 
 });

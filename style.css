@@ -194,53 +194,95 @@
 /* QUIZ*/
 
 .quiz-option.correct-answer {
-    background-color: #d1fae5; /* green-100 */
-    border-color: #34d399; /* green-400 */
-    color: #065f46; /* green-800 */
-    font-weight: bold;
-}
+            background-color: #d1fae5; /* green-100 */
+            border-color: #34d399; /* green-400 */
+            color: #065f46; /* green-800 */
+            font-weight: bold;
+        }
 
-.quiz-option.wrong-answer {
-    background-color: #fee2e2; /* red-100 */
-    border-color: #ef4444; /* red-500 */
-    color: #991b1b; /* red-800 */
-    font-weight: bold;
-}
+        .quiz-option.wrong-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+            color: #991b1b; /* red-800 */
+            font-weight: bold;
+        }
 
-/* Opcional: Estilo para botões de navegação */
-.btn-primary {
-    background: linear-gradient(to right, #8b5cf6, #ec4899); /* purple-500 to pink-500 */
-    color: white;
-    font-weight: bold;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-.btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
+        /* Botões */
+        .btn-primary {
+            background: linear-gradient(to right, #8b5cf6, #ec4899); /* purple-500 to pink-500 */
+            color: white;
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
-.btn-secondary {
-    background-color: #e5e7eb; /* gray-200 */
-    color: #374151; /* gray-700 */
-    font-weight: bold;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-.btn-secondary:hover {
-    background-color: #d1d5db; /* gray-300 */
-}
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
 
-/* Estilo para número da questão */
-.quiz-question-number {
-    font-size: 0.875rem; /* 14px */
-    color: #6b7280; /* gray-500 */
-    margin-bottom: 0.5rem;
-    text-align: right;
-}
+        .btn-secondary {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #374151; /* gray-700 */
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+                0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db; /* gray-300 */
+        }
+
+        /* Número da questão */
+        .quiz-question-number {
+            font-size: 0.875rem; /* 14px */
+            color: #6b7280; /* gray-500 */
+            margin-bottom: 0.5rem;
+            text-align: right;
+        }
+
+        /* Popup resultado */
+        #quizPopup {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        #quizPopup.show {
+            display: flex;
+        }
+
+        #quizPopup > div {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 28rem;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        #quizPopup h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1f2937; /* gray-800 */
+        }
+
+        #quizPopup p {
+            font-size: 1.125rem;
+            color: #4b5563; /* gray-600 */
+            margin-bottom: 1.5rem;
+        }
